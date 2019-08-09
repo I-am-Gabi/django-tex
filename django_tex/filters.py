@@ -8,6 +8,7 @@ def do_linebreaks(value):
 
 def do_latex_escape(value):
     return (str(value)
+            .replace('\\', '\textbackslash\textbackslash')
             .replace('&', '\\&')
             .replace('$', '\\$')
             .replace('%', '\\%')

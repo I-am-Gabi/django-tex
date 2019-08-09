@@ -121,7 +121,8 @@ class Exceptions(TestCase):
 
         self.assertEqual(source, cm.exception.source)
         self.assertRegex(cm.exception.log, r'^This is LuaTeX')
-        self.assertRegex(cm.exception.message, r'^! Undefined control sequence')
+        self.assertRegex(cm.exception.message,
+                         r'^! Undefined control sequence')
 
 
 class RenderingTemplates(TestCase):
@@ -186,6 +187,7 @@ class CompilingTemplates(TestCase):
         pdf = compile_template_to_pdf(template_name, context)
         self.assertIsNotNone(pdf)
 
+
 class TemplateLanguage(TestCase):
     '''
     Tests features such as whitespace control and filters
@@ -239,9 +241,9 @@ class TemplateLanguage(TestCase):
 
     def test_escaping_special_characters(self):
         template_string = "{{ value | latex_escape }}"
-        context = {'value': '&$%#_{}'}
+        context = {'value': '&$%#_{}\\'}
         output = self.render_template(template_string, context)
-        expected = '\\&\\$\\%\\#\\_\\{\\}'
+        expected = '\&\$\%\#\_\{\}\textbackslash\textbackslash'
         self.assertEqual(output, expected)
 
     def test_linebreaks(self):
@@ -260,8 +262,8 @@ class TemplateLanguage(TestCase):
         # Render with default django renderer
         output = self.render_template(template_string, context, using='django')
         self.assertHTMLEqual(
-            output, 
-            '<p>Ich sitze am Straßenhang.<br>'+
+            output,
+            '<p>Ich sitze am Straßenhang.<br>' +
             'Der Fahrer wechselt das Rad.</p>'
         )
 
@@ -287,10 +289,13 @@ class TemplateLanguage(TestCase):
         template_string = '{% graphicspath %}'
         with override_settings(LATEX_INTERPRETER='pdflatex'):
             output = self.render_template(template_string)
-            self.assertEqual(output, '\graphicspath{ {c:/foo/bar/} {"c:/bar baz/foo/"} }')
+            self.assertEqual(
+                output, '\graphicspath{ {c:/foo/bar/} {"c:/bar baz/foo/"} }')
         with override_settings(LATEX_INTERPRETER='lualatex'):
             output = self.render_template(template_string)
-            self.assertEqual(output, '\graphicspath{ {c:/foo/bar/} {c:/bar baz/foo/} }')
+            self.assertEqual(
+                output, '\graphicspath{ {c:/foo/bar/} {c:/bar baz/foo/} }')
+
 
 class Models(TestCase):
     '''
@@ -304,7 +309,8 @@ class Models(TestCase):
         TemplateFile(title='valid', name='tests/test.tex').full_clean()
 
         with self.assertRaises(ValidationError):
-            TemplateFile(title='invalid', name='template/doesnt.exist').full_clean()
+            TemplateFile(title='invalid',
+                         name='template/doesnt.exist').full_clean()
 
 
 class Views(TestCase):
@@ -318,7 +324,9 @@ class Views(TestCase):
             'date': datetime.date(2017, 10, 25),
             'names': ['Arjen', 'Robert', 'Mats'],
         }
-        response = render_to_pdf(request, template_name, context, filename='test.pdf')
+        response = render_to_pdf(
+            request, template_name, context, filename='test.pdf')
         self.assertIsInstance(response, HttpResponse)
         self.assertEqual(response['Content-Type'], 'application/pdf')
-        self.assertEqual(response['Content-Disposition'], 'filename="test.pdf"')
+        self.assertEqual(
+            response['Content-Disposition'], 'filename="test.pdf"')
