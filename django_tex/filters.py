@@ -7,7 +7,7 @@ def do_linebreaks(value):
 
 
 def do_latex_escape(value):
-    return (value
+    return (str(value)
             .replace('&', '\\&')
             .replace('$', '\\$')
             .replace('%', '\\%')
@@ -18,7 +18,7 @@ def do_latex_escape(value):
             )
 
 
-def capitalize(value):
+def do_capitalize(value):
     return str(value).capitalize()
 
 
@@ -26,7 +26,7 @@ tex_specific_filters = {
     'localize': localize_input,
     'linebreaks': do_linebreaks,
     'latex_escape': do_latex_escape,
-    'capitalize': capitalize,
+    'capitalize': do_capitalize,
 }
 
 FILTERS = register.filters.copy()
