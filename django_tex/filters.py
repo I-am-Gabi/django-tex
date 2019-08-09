@@ -19,7 +19,7 @@ def do_latex_escape(value):
 
 
 def capitalize(value):
-    return (value.capitalize())
+    return str((value).capitalize())
 
 
 tex_specific_filters = {
