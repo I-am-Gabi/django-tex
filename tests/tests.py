@@ -243,7 +243,7 @@ class TemplateLanguage(TestCase):
         template_string = "{{ value | latex_escape }}"
         context = {'value': '&$%#_{}\\'}
         output = self.render_template(template_string, context)
-        expected = '\\&\\$\\%\\#\\_\\{\\}\\textbackslash'
+        expected = '\\&\\$\\%\\#\\_\\{\\}\\'
         self.assertEqual(output, expected)
 
     def test_linebreaks(self):
