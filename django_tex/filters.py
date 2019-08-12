@@ -23,11 +23,16 @@ def do_capitalize(value):
     return str(value).capitalize()
 
 
+def do_join(value):
+    return (', '.join(value))
+
+
 tex_specific_filters = {
     'localize': localize_input,
     'linebreaks': do_linebreaks,
     'latex_escape': do_latex_escape,
     'capitalize': do_capitalize,
+    'do_joint': do_join,
 }
 
 FILTERS = register.filters.copy()
