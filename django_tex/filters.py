@@ -32,7 +32,7 @@ tex_specific_filters = {
     'linebreaks': do_linebreaks,
     'latex_escape': do_latex_escape,
     'capitalize': do_capitalize,
-    'do_joint': do_join,
+    'join': do_join,
 }
 
 FILTERS = register.filters.copy()
